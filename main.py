@@ -1,12 +1,11 @@
 import FileHandler
 import Encryption
 
-"""This is the layout of a simple password manager that does not use files"""
+"""
+Password manager that uses variable ROT encryption and alphabet rotation derived 
+from md5 hashing and stacking your password 1 million times
+"""
 __author__ = "Diavel"
-
-"""PEP 8 recommends that all methods and variables be lowercase and use underscores to separate words. 
-   This suggestion means that camelCase does not conform to PEP standards.
-   I used camelCase anyways because PEP has some less than ideal requirements such as 4 spaces instead of tabs."""
 
 
 def add():
@@ -34,7 +33,7 @@ def printall():
 
 def main():
     while True:
-        match input("Append, print, delete, or quit (a/p/d/q): ").lower():
+        match input("Add, print, delete, or quit (a/p/d/q): ").lower():
             case "a":
                 add()
             case "d":

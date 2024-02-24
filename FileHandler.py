@@ -1,6 +1,6 @@
 class File:
-    """Creates file if it does not exist"""
 
+    """Creates file if it does not exist"""
     def __init__(self):
         self.filename = "Passwords.txt"  # this value is hard coded because there should only be one file
         """
@@ -18,7 +18,7 @@ class File:
         with open(self.filename, 'a') as f:
             f.write(passwordEntry + "\n")
 
-    """prints the file to the console"""
+    """Return every entry in file as array"""
     def print(self):
         array = []
         with open(self.filename, 'r') as f:
