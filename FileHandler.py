@@ -29,7 +29,11 @@ class File:
     """Removes object from index"""
     def delete(self, lineToRemove: int):
         array = self.print()
-        array.pop(lineToRemove-1)
+        try:
+            array.pop(lineToRemove-1)
+        except IndexError:
+            print("file is empty")
+            return
         with open(self.filename, 'w') as f:
             for line in array:
                 f.write(line+"\n")
