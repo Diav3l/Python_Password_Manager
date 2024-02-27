@@ -31,7 +31,7 @@ class Encryption:
 
     """generates a unique password of chosen length"""
     @staticmethod
-    def generate(length: int, special_characters=True):
+    def generate(length=30, special_characters=True):
         if special_characters:
             return str(secrets.token_bytes(length))[2:length+2]
         else:
