@@ -32,6 +32,9 @@ def add():
 
 
 def delete():
+    if not f.print():
+        print("File is empty")
+        return
     f.delete(int(input("enter the index of the entry you want to delete:\n")))
 
 

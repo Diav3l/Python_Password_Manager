@@ -32,7 +32,7 @@ class File:
         try:
             array.pop(lineToRemove-1)
         except IndexError:
-            print("file is empty")
+            print("line is empty")
             return
         with open(self.filename, 'w') as f:
             for line in array:
