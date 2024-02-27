@@ -1,5 +1,6 @@
 import FileHandler
 import Encryption
+import hashlib
 
 """
 Password manager that uses variable ROT encryption and alphabet rotation derived 
@@ -61,6 +62,6 @@ def main():
 
 
 if __name__ == "__main__":
-    f = FileHandler.File()
-    Encryptor = Encryption.Encryption()
+    f = FileHandler.File(str(hashlib.sha3_512(input("Username: ").encode()).hexdigest()))
+    Encryptor = Encryption.Encryption(hashlib.sha3_512(input("Input password: ").encode()))
     main()

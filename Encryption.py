@@ -8,13 +8,12 @@ from md5 hashing and stacking your password 1 million times"""
 class Encryption:
 
     """Prompts user for password; hashes and stacks password"""
-    def __init__(self):
+    def __init__(self, hashedPassword):
         # Do not ever modify this string, it will prevent proper decryption and all data will be lost
         alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`~!@#$%^&*()_-=|\}]{[\"':;?/>.<, "
-        hashed = hashlib.md5(input("Input password: ").encode())
         for i in range(1000000):
-            hashed = hashlib.md5(hashed.digest() + hashed.digest())
-        random.seed(hashed.digest())
+            hashedPassword = hashlib.md5(hashedPassword.digest() + hashedPassword.digest())
+        random.seed(hashedPassword.digest())
         self.charSet = ''.join(random.sample(alphabet, len(alphabet)))
 
     """Encrypts the provided plaintext string to str(ciphertext)"""

@@ -1,8 +1,8 @@
 class File:
 
     """Creates file if it does not exist"""
-    def __init__(self):
-        self.filename = "Passwords.txt"  # this value is hard coded because there should only be one file
+    def __init__(self, pointer: str):
+        self.filename = "UserData/"+pointer+".txt"
         """
         this is in a try except because the 'x' argument throws an error if the file exists.
         But if the file exists no actions need to be taken. 
