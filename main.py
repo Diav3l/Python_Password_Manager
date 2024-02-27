@@ -62,6 +62,6 @@ def main():
 
 
 if __name__ == "__main__":
-    f = FileHandler.File(str(hashlib.sha3_512(input("Username: ").encode()).hexdigest()))
+    f = FileHandler.File(hashlib.sha3_512(input("Username: ").encode()).hexdigest())
     Encryptor = Encryption.Encryption(hashlib.sha3_512(input("Input password: ").encode()))
     main()
