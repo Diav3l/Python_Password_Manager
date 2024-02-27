@@ -29,6 +29,7 @@ class Encryption:
         actual = string[:-6]
         return "".join([self.charSet[(self.charSet.find(c) - rotation) % len(self.charSet)] for c in actual])
 
+    """generates a unique password of chosen length"""
     @staticmethod
     def generate(length: int, special_characters=True):
         if special_characters:
