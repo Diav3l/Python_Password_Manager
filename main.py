@@ -11,16 +11,12 @@ __author__ = "Diavel"
 
 def generate(string: str):
     criteria = string.split(':')
-    match len(criteria):
-        case 1:
-            return '-1'
-        case 2:
-            if len(criteria[1]) < 1:
-                return '-1'
-            return Encryption.Encryption.generate(int(criteria[1]))
-        case 3:
-            return Encryption.Encryption.generate(int(criteria[1]), criteria[2] == "True")
-
+    if len(criteria) >= 3 and len(criteria[2]) > 0 and criteria[1].isdigit():
+        return Encryption.Encryption.generate(int(criteria[1]), criteria[2] == "True")
+    elif len(criteria) >= 2 and len(criteria[1]) > 0 and criteria[1].isdigit():
+        return Encryption.Encryption.generate(int(criteria[1]))
+    else:
+        return Encryption.Encryption.generate()
 
 
 def add():
@@ -34,9 +30,6 @@ def add():
     else:
         if userinput[2].__contains__("Gen"):
             userinput[2] = generate(userinput[2])
-        if userinput[2] == '-1':
-            print("Please ensure required arguments for password generation are provided")
-            add()
         string = userinput[0].lower() + ", " + userinput[1] + ", " + userinput[2]
         f.appendFile(Encryptor.encrypt(string))
 
