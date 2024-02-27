@@ -1,3 +1,4 @@
+import os
 class File:
 
     """Creates file if it does not exist"""
@@ -12,6 +13,9 @@ class File:
             open(self.filename, 'x')
         except FileExistsError:
             pass
+        except FileNotFoundError:
+            os.mkdir("UserData")
+            open(self.filename, 'x')
 
     """adds entry to the bottom of the file"""
     def appendFile(self, passwordEntry):
