@@ -1,6 +1,7 @@
 import FileHandler
 import Encryption
 import hashlib
+import os
 
 """
 Password manager that uses variable ROT encryption and alphabet rotation derived 
@@ -38,7 +39,14 @@ def delete():
     if not f.print():
         print("File is empty")
         return
-    f.delete(int(input("enter the index of the entry you want to delete:\n")))
+    user_input = input("enter the index of the entry you want to delete:\n")
+    if user_input == 'q' or user_input == 'Q':
+        return
+    try:
+        f.delete(int(user_input))
+    except ValueError:
+        print("please enter integer")
+        delete()
 
 
 def printall():
@@ -46,6 +54,15 @@ def printall():
     for line in f.print():
         print(str(index) + ": " + Encryptor.decrypt(line))
         index += 1
+
+
+def verify_login():
+    if not os.path.exists(f.filename):
+        return True
+    elif Encryptor.verify_hash.hexdigest() == Encryptor.decrypt(f.print()[0]).rstrip() and os.path.exists(f.filename):
+        return True
+    else:
+        return False
 
 
 def main():
@@ -64,6 +81,12 @@ def main():
 
 
 if __name__ == "__main__":
-    f = FileHandler.File(hashlib.sha3_512(input("Username: ").encode()).hexdigest())
-    Encryptor = Encryption.Encryption(hashlib.sha3_512(input("Input password: ").encode()))
-    main()
+    while True:
+        username_pointer = hashlib.sha3_512(input("Username: ").encode()).hexdigest()
+        password_hash = hashlib.sha3_512(input("Input password: ").encode())
+        Encryptor = Encryption.Encryption(password_hash)
+        f = FileHandler.File(username_pointer, Encryptor.encrypt(Encryptor.verify_hash.hexdigest()))
+        if not verify_login():
+            print("Username or password is incorrect")
+            continue
+        main()

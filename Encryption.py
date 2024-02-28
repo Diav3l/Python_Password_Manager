@@ -11,10 +11,13 @@ class Encryption:
     def __init__(self, hashedPassword):
         # Do not ever modify this string, it will prevent proper decryption and all data will be lost
         alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`~!@#$%^&*()_-=|\}]{[\"':;?/>.<, "
-        for i in range(1000000):
+        for i in range(500000):
             hashedPassword = hashlib.md5(hashedPassword.digest() + hashedPassword.digest())
         random.seed(hashedPassword.digest())
+        for i in range(500000):
+            hashedPassword = hashlib.sha3_512(hashedPassword.digest() + hashedPassword.digest())
         self.charSet = ''.join(random.sample(alphabet, len(alphabet)))
+        self.verify_hash = hashedPassword
 
     """Encrypts the provided plaintext string to str(ciphertext)"""
     def encrypt(self, string: str):

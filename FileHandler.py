@@ -1,16 +1,15 @@
 import os
+
+
 class File:
 
-    """Creates file if it does not exist"""
-    def __init__(self, pointer: str):
+    """Creates file if it does not exist and add the users verify_hash at the top of the file"""
+    def __init__(self, pointer: str, verify_hash:str):
         self.filename = "UserData/"+pointer+".txt"
-        """
-        this is in a try except because the 'x' argument throws an error if the file exists.
-        But if the file exists no actions need to be taken. 
-        This is one of the only times in python except pass is acceptable.
-        """
         try:
             open(self.filename, 'x')
+            with open(self.filename, 'w') as f:
+                f.write(verify_hash+"\n")
         except FileExistsError:
             pass
         except FileNotFoundError:
@@ -31,10 +30,13 @@ class File:
         return array
 
     """Removes object from index"""
-    def delete(self, lineToRemove: int):
+    def delete(self, line_to_remove: int):
+        if line_to_remove == 1:
+            print("Cannot delete verify hash")
+            return
         array = self.print()
         try:
-            array.pop(lineToRemove-1)
+            array.pop(line_to_remove-1)
         except IndexError:
             print("line is empty")
             return
