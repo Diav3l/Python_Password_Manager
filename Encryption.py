@@ -2,7 +2,7 @@ import hashlib
 import secrets
 import random
 """Class that uses variable ROT encryption and alphabet rotation derived 
-from md5 hashing and stacking your password 1 million times"""
+from sha3_512 hashing and stacking your password 1 million times"""
 
 
 class Encryption:
@@ -12,7 +12,7 @@ class Encryption:
         # Do not ever modify this string, it will prevent proper decryption and all data will be lost
         alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`~!@#$%^&*()_-=|\}]{[\"':;?/>.<, "
         for i in range(500000):
-            hashedPassword = hashlib.md5(hashedPassword.digest() + hashedPassword.digest())
+            hashedPassword = hashlib.sha3_512(hashedPassword.digest() + hashedPassword.digest())
         random.seed(hashedPassword.digest())
         for i in range(500000):
             hashedPassword = hashlib.sha3_512(hashedPassword.digest() + hashedPassword.digest())
