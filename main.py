@@ -23,8 +23,11 @@ def generate(string: str):
 def add():
     # added newline character because unlike print, input does not add a new line.
     criteria = "Enter username and password is the format (Website, Username, Password) \n" \
-               "if password typed is Gen:{int}:{bool} a password will be generated at length:\n"
+               "If password typed is Gen:{int}:{bool} a password will be generated at length\n" \
+               "Enter q to return:\n"
     userinput = input(criteria).split(', ')
+    if userinput[0].lower() == "q":
+        return
     if len(userinput) < 3 or len(userinput[2]) <= 0:
         print("Please enter info as (Website, Username, Password)")
         add()  # reruns the add function if the length is wrong
@@ -39,7 +42,7 @@ def delete():
     if not f.print():
         print("File is empty")
         return
-    user_input = input("enter the index of the entry you want to delete:\n")
+    user_input = input("enter the index of the entry you want to delete, enter q to return:\n")
     if user_input == 'q' or user_input == 'Q':
         return
     try:
@@ -90,3 +93,5 @@ if __name__ == "__main__":
             print("Username or password is incorrect")
             continue
         main()
+        print("Goodbye")
+        break
