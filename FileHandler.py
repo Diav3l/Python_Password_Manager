@@ -4,7 +4,7 @@ import os
 class File:
 
     """Creates file if it does not exist and add the users verify_hash at the top of the file"""
-    def __init__(self, pointer: str, verify_hash:str):
+    def __init__(self, pointer: str, verify_hash: str):
         self.filename = "UserData/"+pointer+".txt"
         try:
             open(self.filename, 'x')
@@ -18,12 +18,12 @@ class File:
                 f.write(verify_hash+"\n")
 
     """adds entry to the bottom of the file"""
-    def append_file(self, passwordEntry: str):
+    def append_file(self, passwordEntry: str) -> None:
         with open(self.filename, 'a') as f:
             f.write(passwordEntry + "\n")
 
     """Replaces content of file with contents of given array"""
-    def write_file(self, strings: list[str]):
+    def write_file(self, strings: list[str]) -> None:
         string = ''
         for line in strings:
             string += line+"\n"
@@ -31,7 +31,7 @@ class File:
             f.write(string)
 
     """Return every entry in file as array"""
-    def print(self):
+    def print(self) -> list[str]:
         array = []
         with open(self.filename, 'r') as f:
             for line in f:
@@ -39,7 +39,7 @@ class File:
         return array
 
     """Removes object from index"""
-    def delete(self, line_to_remove: int):
+    def delete(self, line_to_remove: int) -> None:
         array = self.print()
         try:
             array.pop(line_to_remove-1)

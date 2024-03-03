@@ -20,23 +20,23 @@ class Encryption:
         self.verify_hash = hashedPassword
 
     """Encrypts the provided plaintext string to str(ciphertext)"""
-    def encrypt(self, string: str):
+    def encrypt(self, string: str) -> str:
         rotation = secrets.randbelow(len(self.charSet))
         Salt = secrets.randbelow(100)
         encoded = "".join([self.charSet[(self.charSet.find(c) + rotation) % len(self.charSet)] for c in string])
         return encoded + str("{:04d}".format(rotation * Salt)) + str("{:02d}".format(Salt))
 
     """Converts ciphertext back into plaintext"""
-    def decrypt(self, string: str):
+    def decrypt(self, string: str) -> str:
         rotation = int(string[-6:-2]) // int(string[-2:])
         actual = string[:-6]
         return "".join([self.charSet[(self.charSet.find(c) - rotation) % len(self.charSet)] for c in actual])
 
     """generates a unique password of chosen length"""
     @staticmethod
-    def generate(length=30, special_characters=True):
+    def generate(length=30, special_characters=True) -> str:
         if special_characters:
-            return str(secrets.token_bytes(length))[2:length+2]
+            return str(secrets.token_bytes(length))[1:length+1]
         else:
             return secrets.token_hex(length)[:length]
 

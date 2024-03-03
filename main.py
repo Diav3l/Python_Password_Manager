@@ -10,7 +10,7 @@ from md5 hashing and stacking your password 1 million times
 __author__ = "Diavel"
 
 
-def generate(string: str):
+def generate(string: str) -> str:
     criteria = string.split(':')
     if len(criteria) >= 3 and len(criteria[2]) > 0 and criteria[1].isdigit():
         return Encryption.Encryption.generate(int(criteria[1]), criteria[2] == "True")
@@ -20,7 +20,7 @@ def generate(string: str):
         return Encryption.Encryption.generate()
 
 
-def add():
+def add() -> None:
     # added newline character because unlike print, input does not add a new line.
     criteria = "Enter username and password is the format (Website, Username, Password) \n" \
                "If password typed is Gen:{int}:{bool} a password will be generated at length\n" \
@@ -38,7 +38,7 @@ def add():
         f.append_file(Encryptor.encrypt(userinput[0].lower() + ", " + userinput[1] + ", " + userinput[2]))
 
 
-def delete():
+def delete() -> None:
     if not f.print():
         print("File is empty")
         return
@@ -55,14 +55,14 @@ def delete():
         delete()
 
 
-def printall():
+def printall() -> None:
     index = 1
     for line in f.print():
         print(str(index) + ": " + Encryptor.decrypt(line))
         index += 1
 
 
-def verify_login():
+def verify_login() -> bool:
     if not os.path.exists(f.filename):
         return True
     elif Encryptor.verify_hash.hexdigest() == Encryptor.decrypt(f.print()[0]).rstrip() and os.path.exists(f.filename):
@@ -71,7 +71,7 @@ def verify_login():
         return False
 
 
-def change_password():
+def change_password() -> None:
     old_password_hash = Encryption.Encryption.stack(hashlib.sha3_512(input("Old Password: ").encode())).hexdigest()
     if not old_password_hash == Encryptor.decrypt(f.print()[0]).rstrip():
         print("Old password is incorrect")
@@ -93,9 +93,6 @@ def change_password():
     for line in plaintext:
         ciphertext.append(temp_encryptor.encrypt(line))
     f.write_file(ciphertext)
-    print(encrypted_file)
-    print(plaintext)
-    print(ciphertext)
     del plaintext
 
 
