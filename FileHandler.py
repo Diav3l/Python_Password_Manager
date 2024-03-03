@@ -18,9 +18,17 @@ class File:
                 f.write(verify_hash+"\n")
 
     """adds entry to the bottom of the file"""
-    def appendFile(self, passwordEntry):
+    def appendFile(self, passwordEntry: str):
         with open(self.filename, 'a') as f:
             f.write(passwordEntry + "\n")
+
+    """Replaces content of file with contents of given array"""
+    def write_file(self, strings: list[str]):
+        string = ''
+        for line in strings:
+            string += line+"\n"
+        with open(self.filename, 'w') as f:
+            f.write(string)
 
     """Return every entry in file as array"""
     def print(self):
