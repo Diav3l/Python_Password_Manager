@@ -18,7 +18,7 @@ class File:
                 f.write(verify_hash+"\n")
 
     """adds entry to the bottom of the file"""
-    def appendFile(self, passwordEntry: str):
+    def append_file(self, passwordEntry: str):
         with open(self.filename, 'a') as f:
             f.write(passwordEntry + "\n")
 
