@@ -45,7 +45,7 @@ def delete() -> None:
     user_input = input("enter the index of the entry you want to delete, enter q to return:\n")
     if user_input == 'q' or user_input == 'Q':
         return
-    elif user_input == 1:
+    elif user_input == "1":
         print("Cannot delete verify hash")
         return
     try:
