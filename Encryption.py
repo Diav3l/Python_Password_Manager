@@ -39,3 +39,9 @@ class Encryption:
             return str(secrets.token_bytes(length))[2:length+2]
         else:
             return secrets.token_hex(length)[:length]
+
+    @staticmethod
+    def stack(string):
+        for i in range(1000000):
+            string = hashlib.sha3_512(string.digest() + string.digest())
+        return string
