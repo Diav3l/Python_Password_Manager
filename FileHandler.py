@@ -14,7 +14,8 @@ class File:
             pass
         except FileNotFoundError:
             os.mkdir("UserData")
-            open(self.filename, 'x')
+            with open(self.filename, 'w') as f:
+                f.write(verify_hash+"\n")
 
     """adds entry to the bottom of the file"""
     def appendFile(self, passwordEntry):
@@ -31,9 +32,6 @@ class File:
 
     """Removes object from index"""
     def delete(self, line_to_remove: int):
-        if line_to_remove == 1:
-            print("Cannot delete verify hash")
-            return
         array = self.print()
         try:
             array.pop(line_to_remove-1)
