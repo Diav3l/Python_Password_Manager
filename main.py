@@ -31,11 +31,11 @@ def add():
     if len(userinput) < 3 or len(userinput[2]) <= 0:
         print("Please enter info as (Website, Username, Password)")
         add()  # reruns the add function if the length is wrong
+        return
     else:
         if userinput[2].__contains__("Gen"):
             userinput[2] = generate(userinput[2])
-        string = userinput[0].lower() + ", " + userinput[1] + ", " + userinput[2]
-        f.appendFile(Encryptor.encrypt(string))
+        f.append_file(Encryptor.encrypt(userinput[0].lower() + ", " + userinput[1] + ", " + userinput[2]))
 
 
 def delete():
@@ -44,6 +44,9 @@ def delete():
         return
     user_input = input("enter the index of the entry you want to delete, enter q to return:\n")
     if user_input == 'q' or user_input == 'Q':
+        return
+    elif user_input == 1:
+        print("Cannot delete verify hash")
         return
     try:
         f.delete(int(user_input))
@@ -68,9 +71,37 @@ def verify_login():
         return False
 
 
+def change_password():
+    old_password_hash = Encryption.Encryption.stack(hashlib.sha3_512(input("Old Password: ").encode())).hexdigest()
+    if not old_password_hash == Encryptor.decrypt(f.print()[0]).rstrip():
+        print("Old password is incorrect")
+        change_password()
+        return
+    new = hashlib.sha3_512(input("New Password: ").encode())
+    confirm_new = hashlib.sha3_512(input("Confirm New Password: ").encode())
+    if not new.hexdigest() == confirm_new.hexdigest():
+        print("new passwords do not match")
+        change_password()
+        return
+    encrypted_file = f.print()
+    plaintext = []
+    for line in encrypted_file:
+        plaintext.append(Encryptor.decrypt(line))
+    plaintext[0] = Encryption.Encryption.stack(new).hexdigest()
+    ciphertext = []
+    temp_encryptor = Encryption.Encryption(new)
+    for line in plaintext:
+        ciphertext.append(temp_encryptor.encrypt(line))
+    f.write_file(ciphertext)
+    print(encrypted_file)
+    print(plaintext)
+    print(ciphertext)
+    del plaintext
+
+
 def main():
     while True:
-        match input("Add, print, delete, or quit (a/p/d/q): ").lower():
+        match input("Add, print, delete, change, or quit (a/p/d/c/q): ").lower():
             case "a":
                 add()
             case "d":
@@ -78,6 +109,9 @@ def main():
             case "p":
                 printall()
             case "q":
+                break
+            case "c":
+                change_password()
                 break
             case _:
                 print("Invalid input")
