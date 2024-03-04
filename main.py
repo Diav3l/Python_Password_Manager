@@ -97,8 +97,14 @@ def change_password() -> None:
 
 
 def main():
+    menu = "Add entry................a\n" \
+            "Print all entries........p\n" \
+            "Delete password entry....d\n" \
+            "Change password..........c\n" \
+            "Generate noise files.....g\n" \
+            "Quit and close program...q\n:"
     while True:
-        match input("Add, print, delete, change, or quit (a/p/d/c/q): ").lower():
+        match input(menu).lower():
             case "a":
                 add()
             case "d":
@@ -110,6 +116,9 @@ def main():
             case "c":
                 change_password()
                 break
+            case "g":
+                print("function not yet implemented")
+                # Encryption.Encryption.generate_noise(int(input("Number of Files: ")))
             case _:
                 print("Invalid input")
 
