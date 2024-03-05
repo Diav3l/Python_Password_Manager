@@ -42,7 +42,7 @@ class File:
         return array
 
     def delete_line(self, line_to_remove: int) -> None:
-        """Deletes line with given number [1,∞)"""
+        """Deletes given line in range [1,∞)"""
         array = self.to_array()
         try:
             array.pop(line_to_remove-1)
