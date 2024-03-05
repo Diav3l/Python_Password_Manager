@@ -117,7 +117,8 @@ def main():
                 change_password()
                 break
             case "g":
-                Encryption.Encryption.generate_noise(int(input("Number of Files: ")))
+                print("function not yet implemented")
+                # Encryption.Encryption.generate_noise(int(input("Number of Files: ")))
             case _:
                 print("Invalid input")
 
