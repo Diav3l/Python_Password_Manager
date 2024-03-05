@@ -33,7 +33,7 @@ class File:
         with open(self.filename, 'w') as f:
             f.write(string)
 
-    def print(self) -> list[str]:
+    def to_array(self) -> list[str]:
         """:returns every entry in file as array"""
         array = []
         with open(self.filename, 'r') as f:
@@ -41,9 +41,9 @@ class File:
                 array.append(line.rstrip())
         return array
 
-    def delete(self, line_to_remove: int) -> None:
+    def delete_line(self, line_to_remove: int) -> None:
         """Deletes line with given number [1,∞)"""
-        array = self.print()
+        array = self.to_array()
         try:
             array.pop(line_to_remove-1)
         except IndexError:

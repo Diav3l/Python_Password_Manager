@@ -21,7 +21,7 @@ def generate(string: str) -> str:
 
 
 def add() -> None:
-    # added newline character because unlike print, input does not add a new line.
+    # added newline character because unlike to_array, input does not add a new line.
     criteria = "Enter username and password is the format (Website, Username, Password) \n" \
                "If password typed is Gen:{int}:{bool} a password will be generated at length\n" \
                "Enter q to return:\n"
@@ -39,17 +39,17 @@ def add() -> None:
 
 
 def delete() -> None:
-    if not f.print():
+    if not f.to_array():
         print("File is empty")
         return
-    user_input = input("enter the index of the entry you want to delete, enter q to return:\n")
+    user_input = input("enter the index of the entry you want to delete_line, enter q to return:\n")
     if user_input == 'q' or user_input == 'Q':
         return
     elif user_input == "1":
-        print("Cannot delete verify hash")
+        print("Cannot delete_line verify hash")
         return
     try:
-        f.delete(int(user_input))
+        f.delete_line(int(user_input))
     except ValueError:
         print("please enter integer")
         delete()
@@ -57,7 +57,7 @@ def delete() -> None:
 
 def printall() -> None:
     index = 1
-    for line in f.print():
+    for line in f.to_array():
         print(str(index) + ": " + Encryptor.decrypt(line))
         index += 1
 
@@ -65,7 +65,7 @@ def printall() -> None:
 def verify_login() -> bool:
     if not os.path.exists(f.filename):
         return True
-    elif Encryptor.verify_hash.hexdigest() == Encryptor.decrypt(f.print()[0]).rstrip() and os.path.exists(f.filename):
+    elif Encryptor.verify_hash.hexdigest() == Encryptor.decrypt(f.to_array()[0]).rstrip() and os.path.exists(f.filename):
         return True
     else:
         return False
@@ -73,7 +73,7 @@ def verify_login() -> bool:
 
 def change_password() -> None:
     old_password_hash = Encryption.Encryption.stack(hashlib.sha3_512(input("Old Password: ").encode())).hexdigest()
-    if not old_password_hash == Encryptor.decrypt(f.print()[0]).rstrip():
+    if not old_password_hash == Encryptor.decrypt(f.to_array()[0]).rstrip():
         print("Old password is incorrect")
         change_password()
         return
@@ -83,7 +83,7 @@ def change_password() -> None:
         print("new passwords do not match")
         change_password()
         return
-    encrypted_file = f.print()
+    encrypted_file = f.to_array()
     plaintext = []
     for line in encrypted_file:
         plaintext.append(Encryptor.decrypt(line))
@@ -117,8 +117,7 @@ def main():
                 change_password()
                 break
             case "g":
-                print("function not yet implemented")
-                # Encryption.Encryption.generate_noise(int(input("Number of Files: ")))
+                Encryption.Encryption.generate_noise(int(input("Number of Files: ")))
             case _:
                 print("Invalid input")
 
