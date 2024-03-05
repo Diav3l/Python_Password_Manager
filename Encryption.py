@@ -43,8 +43,34 @@ class Encryption:
     def stack(hashed_string: hashlib.sha3_512) -> hashlib.sha3_512:
         """:returns hash_string stacked 1 million times"""
         for i in range(1000000):
-            string = hashlib.sha3_512(string.digest() + string.digest())
-        return string
             hashed_string = hashlib.sha3_512(hashed_string.digest() + hashed_string.digest())
         return hashed_string
 
+    @staticmethod
+    def generate_noise(number_of_files: int):
+        """Creates files of random length with noise that looks the same as actual user data
+
+        This method has one major shortcoming in that all created files have the same creation date and time stamp.
+        This means that generated files are differentiable from users file. This is a known issue and I am looking
+        for a better way to implement this feature.
+        """
+        import FileHandler
+        alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`~!@#$%^&*()_-=|\}]{[\"':;?/>.<, "
+        i = len(alphabet)
+        for file_iterator in range(number_of_files):
+            random.seed(secrets.token_hex())
+            shuffled = ''.join(random.sample(alphabet, len(alphabet)))
+            false_rotation = secrets.randbelow(i)
+            false_salt = secrets.randbelow(100)
+            false_salt = str("{:04d}".format(false_rotation * false_salt)) + str("{:02d}".format(false_salt))
+            false_title = hashlib.sha3_512(secrets.token_hex().encode()).hexdigest()
+            false_header = "".join([shuffled[(shuffled.find(c) + secrets.randbelow(i)) % i] for c in false_title])
+            f = FileHandler.File(false_title, false_header+false_salt)
+            for line_iterator in range(random.randrange(1, 100)):
+                length = random.randrange(40, 60)
+                line = Encryption.generate(length, False)
+                line = "".join([shuffled[(shuffled.find(c) + secrets.randbelow(i)) % i] for c in line])
+                false_rotation = secrets.randbelow(i)
+                false_salt = secrets.randbelow(100)
+                false_salt = str("{:04d}".format(false_rotation * false_salt)) + str("{:02d}".format(false_salt))
+                f.append_file(line+false_salt)
