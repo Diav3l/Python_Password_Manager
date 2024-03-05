@@ -10,7 +10,7 @@ from md5 hashing and stacking your password 1 million times
 __author__ = "Diavel"
 
 
-def generate(string: str) -> str:
+def generate_password(string: str) -> str:
     criteria = string.split(':')
     if len(criteria) >= 3 and len(criteria[2]) > 0 and criteria[1].isdigit():
         return Encryption.Encryption.generate(int(criteria[1]), criteria[2] == "True")
@@ -20,25 +20,24 @@ def generate(string: str) -> str:
         return Encryption.Encryption.generate()
 
 
-def add() -> None:
-    # added newline character because unlike to_array, input does not add a new line.
+def add_entry() -> None:
     criteria = "Enter username and password is the format (Website, Username, Password) \n" \
                "If password typed is Gen:{int}:{bool} a password will be generated at length\n" \
-               "Enter q to return:\n"
+               "Enter q to return\n:"
     userinput = input(criteria).split(', ')
     if userinput[0].lower() == "q":
         return
     if len(userinput) < 3 or len(userinput[2]) <= 0:
         print("Please enter info as (Website, Username, Password)")
-        add()  # reruns the add function if the length is wrong
+        add_entry()
         return
     else:
         if userinput[2].__contains__("Gen"):
-            userinput[2] = generate(userinput[2])
+            userinput[2] = generate_password(userinput[2])
         f.append_file(Encryptor.encrypt(userinput[0].lower() + ", " + userinput[1] + ", " + userinput[2]))
 
 
-def delete() -> None:
+def delete_entry() -> None:
     if not f.to_array():
         print("File is empty")
         return
@@ -52,10 +51,10 @@ def delete() -> None:
         f.delete_line(int(user_input))
     except ValueError:
         print("please enter integer")
-        delete()
+        delete_entry()
 
 
-def printall() -> None:
+def print_all_entries() -> None:
     index = 1
     for line in f.to_array():
         print(str(index) + ": " + Encryptor.decrypt(line))
@@ -106,11 +105,11 @@ def main():
     while True:
         match input(menu).lower():
             case "a":
-                add()
+                add_entry()
             case "d":
-                delete()
+                delete_entry()
             case "p":
-                printall()
+                print_all_entries()
             case "q":
                 break
             case "c":
