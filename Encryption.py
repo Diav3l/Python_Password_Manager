@@ -40,7 +40,11 @@ class Encryption:
             return secrets.token_hex(length)[:length]
 
     @staticmethod
-    def stack(string):
+    def stack(hashed_string: hashlib.sha3_512) -> hashlib.sha3_512:
+        """:returns hash_string stacked 1 million times"""
         for i in range(1000000):
             string = hashlib.sha3_512(string.digest() + string.digest())
         return string
+            hashed_string = hashlib.sha3_512(hashed_string.digest() + hashed_string.digest())
+        return hashed_string
+
