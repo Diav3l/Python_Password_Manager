@@ -1,24 +1,28 @@
 import os
+import Encryption
 
 
 class File:
     """File handler class, takes file name and first line of file arguments"""
 
 
-    def __init__(self, pointer: str, verify_hash: str):
-        """Creates file if it does not exist and add the users verify_hash at the top of the file"""
-        self.filename = "UserData/"+pointer+".txt"
-        try:
-            open(self.filename, 'x')
-            with open(self.filename, 'w') as f:
-                f.write(verify_hash+"\n")
-        except FileExistsError:
-            pass
-        except FileNotFoundError:
-            os.mkdir("UserData")
-            with open(self.filename, 'w') as f:
-                f.write(verify_hash+"\n")
+    def __init__(self, pointer: str, verify_hash: str, user_file = False):
+        """Creates file if it does not exist and add the users verify_hash at the top of the file
 
+        :param pointer: str, is the filename
+        :param verify_hash: str, is the first line of file
+        :param user_file = False, if True creates noise file
+        """
+        self.filename = "UserData/"+pointer+".txt"
+        if not os.path.isdir("UserData"):
+            os.mkdir("UserData")
+        if not os.path.exists(self.filename):
+            if user_file:
+                Encryption.Encryption.generate_noise(50)
+            with open(self.filename, 'w') as f:
+                f.write(verify_hash+"\n")
+            if user_file:
+                Encryption.Encryption.generate_noise(50)
 
     def append_file(self, passwordEntry: str) -> None:
         """Adds entry to the bottom of the file"""
