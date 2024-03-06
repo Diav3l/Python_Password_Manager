@@ -48,12 +48,7 @@ class Encryption:
 
     @staticmethod
     def generate_noise(number_of_files: int):
-        """Creates files of random length with noise that looks the same as actual user data
-
-        This method has one major shortcoming in that all created files have the same creation date and time stamp.
-        This means that generated files are differentiable from users file. This is a known issue and I am looking
-        for a better way to implement this feature.
-        """
+        """Creates files of random length with noise that looks the same as actual user data"""
         import FileHandler
         alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`~!@#$%^&*()_-=|\}]{[\"':;?/>.<, "
         i = len(alphabet)
