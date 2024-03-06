@@ -3,10 +3,7 @@ import Encryption
 import hashlib
 import os
 
-"""
-Password manager that uses variable ROT encryption and alphabet rotation derived 
-from md5 hashing and stacking your password 1 million times
-"""
+
 __author__ = "Diavel"
 
 
@@ -109,14 +106,18 @@ def change_password() -> None:
     f.write_file(ciphertext)
     del plaintext
 
+def delete_account():
+    """Deletes account file"""
+    pass
+
 
 def main():
     menu = "Add entry................a\n" \
             "Print all entries........p\n" \
             "Delete password entry....d\n" \
             "Change password..........c\n" \
-            "Generate noise files.....g\n" \
-            "Quit and close program...q\n:"
+            "Quit and close program...q\n" \
+            "Delete account........DELETE\n:"
     while True:
         update_noise()
         match input(menu).lower():
@@ -131,8 +132,8 @@ def main():
             case "c":
                 change_password()
                 break
-            case "g":
-                Encryption.Encryption.generate_noise(int(input("Number of Files: ")))
+            case "DELETE":
+                print("not yet implemented")
             case _:
                 print("Invalid input")
     update_noise()
