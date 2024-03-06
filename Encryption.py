@@ -23,7 +23,7 @@ class Encryption:
         self.verify_hash = hashedPassword
 
     def encrypt(self, string: str) -> str:
-        """ converts plaintext to ciphertext
+        """converts plaintext to ciphertext
         :returns ciphertext: str
         """
         rotation = secrets.randbelow(len(self.charSet))
@@ -32,7 +32,7 @@ class Encryption:
         return encoded + str("{:04d}".format(rotation * Salt)) + str("{:02d}".format(Salt))
 
     def decrypt(self, string: str) -> str:
-        """Converts plaintext of given ciphertext
+        """Converts ciphertext of given plaintext
         :returns plaintext: str
         """
         rotation = int(string[-6:-2]) // int(string[-2:])
