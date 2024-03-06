@@ -1,18 +1,22 @@
 import os
-import Encryption
 
 
 class File:
-    """File handler class, takes file name and first line of file arguments"""
+    """File handler class"""
 
 
     def __init__(self, pointer: str, verify_hash: str, user_file = False):
         """Creates file if it does not exist and add the users verify_hash at the top of the file
 
+        This is used to create all files, if instantiation is tagged as a user file it creates noise files around the
+        user file so that the user file is guaranteed to share a creation time with noise files. This prevents easy
+        identification of user files.
+
         :param pointer: str, is the filename
         :param verify_hash: str, is the first line of file
         :param user_file = False, if True creates noise file
         """
+        import Encryption # import is in __init__ because it is only needed inside __init__, and it will only run once
         self.filename = "UserData/"+pointer+".txt"
         if not os.path.isdir("UserData"):
             os.mkdir("UserData")
@@ -25,12 +29,16 @@ class File:
                 Encryption.Encryption.generate_noise(50)
 
     def append_file(self, passwordEntry: str) -> None:
-        """Adds entry to the bottom of the file"""
+        """Adds entry to the bottom of the file
+        :param passwordEntry: str
+        """
         with open(self.filename, 'a') as f:
             f.write(passwordEntry + "\n")
 
     def write_file(self, strings: list[str]) -> None:
-        """Replaces content of file with contents of given array"""
+        """Replaces content of file with contents of given array
+        :param strings: list[str]
+        """
         string = ''
         for line in strings:
             string += line+"\n"
@@ -38,7 +46,9 @@ class File:
             f.write(string)
 
     def to_array(self) -> list[str]:
-        """:returns every entry in file as array"""
+        """Copies the entire file to an array
+        :return list[str] of every line in the file, removes new line characters
+        """
         array = []
         with open(self.filename, 'r') as f:
             for line in f:
@@ -46,7 +56,9 @@ class File:
         return array
 
     def delete_line(self, line_to_remove: int) -> None:
-        """Deletes given line in range [1,∞)"""
+        """Deletes given line in range [1,∞)
+        :param line_to_remove: int
+        """
         array = self.to_array()
         try:
             array.pop(line_to_remove-1)
