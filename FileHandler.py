@@ -8,7 +8,7 @@ class File:
     def __init__(self, pointer: str, verify_hash: str, user_file = False):
         """Creates file if it does not exist and add the users verify_hash at the top of the file
 
-        This is used to create all files, if instantiation is tagged as a user file it creates noise files around the
+        This is used to create all files. If instantiation is tagged as a user file it creates noise files around the
         user file so that the user file is guaranteed to share a creation time with noise files. This prevents easy
         identification of user files.
 
