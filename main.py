@@ -11,6 +11,7 @@ __author__ = "Diavel"
 
 
 def generate_password(string: str) -> str:
+    """:returns a string of specified criteria when argument is called by user"""
     criteria = string.split(':')
     if len(criteria) >= 3 and len(criteria[2]) > 0 and criteria[1].isdigit():
         return Encryption.Encryption.generate(int(criteria[1]), criteria[2] == "True")
@@ -18,6 +19,20 @@ def generate_password(string: str) -> str:
         return Encryption.Encryption.generate(int(criteria[1]))
     else:
         return Encryption.Encryption.generate()
+
+def update_noise():
+    """This method creates noise files with the same date and time as user files
+
+    This method is a security measure that stops attackers from identifying the file that contains the users passwords.
+    This file updates the datetime modified attribute of all files to be exactly the same, while the datetime created
+    cannot be change noise files are created at the same time as user files, so it should already be identical.
+    This prevents someone with access to the source code from deleting noise files and isolating user data.
+    """
+    import time
+    for file in os.listdir("UserData"):
+        file = os.path.join("UserData",file)
+        os.utime(file,(time.time(),time.time()))
+
 
 
 def add_entry() -> None:
@@ -103,6 +118,7 @@ def main():
             "Generate noise files.....g\n" \
             "Quit and close program...q\n:"
     while True:
+        update_noise()
         match input(menu).lower():
             case "a":
                 add_entry()
@@ -119,6 +135,7 @@ def main():
                 Encryption.Encryption.generate_noise(int(input("Number of Files: ")))
             case _:
                 print("Invalid input")
+    update_noise()
 
 
 if __name__ == "__main__":
@@ -126,7 +143,7 @@ if __name__ == "__main__":
         username_pointer = hashlib.sha3_512(input("Username: ").encode()).hexdigest()
         password_hash = hashlib.sha3_512(input("Input password: ").encode())
         Encryptor = Encryption.Encryption(password_hash)
-        f = FileHandler.File(username_pointer, Encryptor.encrypt(Encryptor.verify_hash.hexdigest()))
+        f = FileHandler.File(username_pointer, Encryptor.encrypt(Encryptor.verify_hash.hexdigest()), True)
         if not verify_login():
             print("Username or password is incorrect")
             continue
