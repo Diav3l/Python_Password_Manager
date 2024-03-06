@@ -1,0 +1,102 @@
+Main:
+    Methods in main take user input and translate them for use in the backend classes
+    Many methods in main do not require user input in the signature because it takes them in the method body
+
+    generate_password(string: str) -> str:
+        Handles user input to create a unique password given user criteria
+        :returns str
+
+    update_noise():
+            This method creates noise files with the same date and time as user files
+        This method is a security measure that stops attackers from identifying the file that contains the users passwords.
+        This file updates the datetime modified attribute of all files to be exactly the same, while the datetime created
+        cannot be change noise files are created at the same time as user files, so they should already be identical.
+        This prevents someone with access to the source files from identifying user created files.
+
+    add_entry() -> None:
+        Encrypts and adds new entry to users file
+
+    delete_entry() -> None:
+        Deletes line from user file
+
+    print_all_entries() -> None:
+        Decrypts and prints all user entries to the console
+
+    verify_login() -> bool:
+        Verifies that user provided the correct password
+
+    change_password() -> None:
+            Changes the users password for encryption and decryption
+        This method requires that the whole file be decrypted with the old key and re-encrypted with the new key.
+        This means that for a very short amount of time the users file exists as plaintext in RAM, the variable containing
+        the plaintext entries is deleted at the end of the method, and the user is logged out
+
+    delete_account():
+        Deletes account file
+        This is not yet implemented
+
+    main():
+        Handles user input and points to other methods as requested by the user
+
+Encryption:
+    uses variable ROT encryption and alphabet rotation derived from sha3_512 hashing and stacking the users password
+
+    __init__(self, hashedPassword):
+            Generates a unique character list used for encryption based on the given string
+        This means that the users password is the encryption and decryption key, therefore it is incredibly important
+        that it is safeguarded because a lost password is a lost account and no recovery options are possible.
+
+    encrypt(self, string: str) -> str:
+        converts plaintext to ciphertext
+        :returns ciphertext: str
+
+    decrypt(self, string: str) -> str:
+        Converts ciphertext of given plaintext
+        :returns plaintext: str
+
+    @staticmethod
+    generate(length=30, special_characters=True) -> str:
+        Generates a unique password using pythons secrets librairy
+        :param length: int, defaults to 30
+        :param special_characters: bool, defaults to True
+        :return password: str, of requested length and character usage
+
+    @staticmethod
+    stack(hashed_string: hashlib.sha3_512) -> hashlib.sha3_512:
+        Stacks the given string in a sha3_512 hash 1 million times
+        :return hashed_string: _Hash
+
+    @staticmethod
+    generate_noise(number_of_files: int) -> None:
+        Creates files of random length with noise that looks the same as actual user data
+        :param number_of_files: int
+
+File:
+    File handler class
+
+    __init__(self, pointer: str, verify_hash: str, user_file = False):
+        Creates file if it does not exist and add the users verify_hash at the top of the file
+
+        This is used to create all files. If instantiation is tagged as a user file it creates noise files around the
+        user file so that the user file is guaranteed to share a creation time with noise files. This prevents easy
+        identification of user files.
+
+        :param pointer: str, is the filename
+        :param verify_hash: str, is the first line of file
+        :param user_file = False, if True creates noise file
+
+    append_file(self, passwordEntry: str) -> None:
+        Adds entry to the bottom of the file
+        :param passwordEntry: str
+
+    write_file(self, strings: list[str]) -> None:
+        Replaces content of file with contents of given array
+        :param strings: list[str]
+
+    to_array(self) -> list[str]:
+        Copies the entire file to an array
+        :return list[str] of every line in the file, removes new line characters
+
+    delete_line(self, line_to_remove: int) -> None:
+        Deletes given line in range [1,∞)
+        :param line_to_remove: int
