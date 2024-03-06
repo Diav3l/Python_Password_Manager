@@ -3,7 +3,6 @@ import Encryption
 import hashlib
 import os
 
-
 __author__ = "Cole J Gordnier"
 
 
@@ -71,7 +70,7 @@ def delete_entry() -> None:
 
 
 def print_all_entries() -> None:
-    """Decrypts and prints all user entries to the console."""
+    """Decrypts and prints all user entries to the console"""
     index = 1
     for line in f.to_array():
         print(str(index) + ": " + Encryptor.decrypt(line))
