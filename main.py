@@ -4,7 +4,7 @@ import hashlib
 import os
 
 
-__author__ = "Diavel"
+__author__ = "Cole J Gordnier"
 
 
 def generate_password(string: str) -> str:
