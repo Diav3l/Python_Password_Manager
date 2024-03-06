@@ -8,7 +8,9 @@ __author__ = "Diavel"
 
 
 def generate_password(string: str) -> str:
-    """:returns a string of specified criteria when argument is called by user"""
+    """Handles user input to create a unique password given user criteria
+    :returns str
+    """
     criteria = string.split(':')
     if len(criteria) >= 3 and len(criteria[2]) > 0 and criteria[1].isdigit():
         return Encryption.Encryption.generate(int(criteria[1]), criteria[2] == "True")
@@ -22,8 +24,8 @@ def update_noise():
 
     This method is a security measure that stops attackers from identifying the file that contains the users passwords.
     This file updates the datetime modified attribute of all files to be exactly the same, while the datetime created
-    cannot be change noise files are created at the same time as user files, so it should already be identical.
-    This prevents someone with access to the source code from deleting noise files and isolating user data.
+    cannot be change noise files are created at the same time as user files, so they should already be identical.
+    This prevents someone with access to the source files from identifying user created files.
     """
     import time
     for file in os.listdir("UserData"):
@@ -33,6 +35,7 @@ def update_noise():
 
 
 def add_entry() -> None:
+    """Encrypts and adds new entry to users file"""
     criteria = "Enter username and password is the format (Website, Username, Password) \n" \
                "If password typed is Gen:{int}:{bool} a password will be generated at length\n" \
                "Enter q to return\n:"
@@ -50,6 +53,7 @@ def add_entry() -> None:
 
 
 def delete_entry() -> None:
+    """Deletes line from user file"""
     if not f.to_array():
         print("File is empty")
         return
@@ -67,6 +71,7 @@ def delete_entry() -> None:
 
 
 def print_all_entries() -> None:
+    """Decrypts and prints all user entries to the console."""
     index = 1
     for line in f.to_array():
         print(str(index) + ": " + Encryptor.decrypt(line))
@@ -74,6 +79,7 @@ def print_all_entries() -> None:
 
 
 def verify_login() -> bool:
+    """Verifies that user provided the correct password"""
     if not os.path.exists(f.filename):
         return True
     elif Encryptor.verify_hash.hexdigest() == Encryptor.decrypt(f.to_array()[0]).rstrip() and os.path.exists(f.filename):
@@ -83,6 +89,12 @@ def verify_login() -> bool:
 
 
 def change_password() -> None:
+    """Changes the users password for encryption and decryption
+
+    This method requires that the whole file be decrypted with the old key and re-encrypted with the new key.
+    This means that for a very short amount of time the users file exists as plaintext in RAM, the variable containing
+    the plaintext entries is deleted at the end of the method, and the user is logged out
+    """
     old_password_hash = Encryption.Encryption.stack(hashlib.sha3_512(input("Old Password: ").encode())).hexdigest()
     if not old_password_hash == Encryptor.decrypt(f.to_array()[0]).rstrip():
         print("Old password is incorrect")
@@ -117,7 +129,7 @@ def main():
             "Delete password entry....d\n" \
             "Change password..........c\n" \
             "Quit and close program...q\n" \
-            "Delete account........DELETE\n:"
+            "Delete account.....delete\n:"
     while True:
         update_noise()
         match input(menu).lower():
