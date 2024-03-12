@@ -116,7 +116,7 @@ def change_password() -> None:
 
 def delete_account():
     """Deletes account file"""
-    pass
+    f.delete_file()
 
 
 def main():
@@ -138,10 +138,20 @@ def main():
             case "q":
                 break
             case "c":
-                change_password()
+                if not verify_login(hashlib.sha3_512(input("Input password: ").encode())):
+                    print("Password is incorrect")
+                else:
+                    change_password()
+                    break
+            case "delete":
+                prompt = "This action will delete all user entries and cannot be undone. Continue? (y,n)\n:"
+                if not input(prompt).lower() == 'y':
+                    continue
+                if not verify_login(hashlib.sha3_512(input("Input password: ").encode())):
+                    print("Password is incorrect")
+                    continue
+                delete_account()
                 break
-            case "DELETE":
-                print("not yet implemented")
             case _:
                 print("Invalid input")
     update_noise()
