@@ -79,11 +79,18 @@ File:
 
         This is used to create all files. If instantiation is tagged as a user file it creates noise files around the
         user file so that the user file is guaranteed to share a creation time with noise files. This prevents easy
-        identification of user files.
-
+        identification of user files. A random number of noise files are created on each side of the user file. This
+        means that even after a user deletes their file the noise files still appear the same as user info, and
+        contribute to security.
         :param pointer: str, is the filename
         :param verify_hash: str, is the first line of file
         :param user_file = False, if True creates noise file
+
+        *The imports for Encryption and secrets are inside an if statement within the method. This is an intentional
+        decision because the vast majority of the time that the File class is instantiated these imports are not used.
+        importing these when unneeded slows down the creation of noise files meaning that fewer files share a creation
+        time with user data. Therefore, the imports are conditional, under any other circumstances this would be a bad
+        practice.
 
     append_file(self, passwordEntry: str) -> None:
         Adds entry to the bottom of the file

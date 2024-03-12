@@ -13,6 +13,6 @@ has 10 characters and uses special characters and capitals if it takes 1 second 
 which is functionally impossible to brute force on modern computers.
 
     Naming the user file a hash of the username and creating noise files at the same time as user files prevents user
-files from being identified easily be an attacker, and the update_noise method in main means that all files in the
-UserData directory have the same time modified and the users actual file shares creation time with 100 other files.
+files from being easily identified by an attacker, and the update_noise method in main means that all files in the
+UserData directory have the same time modified and the users actual file shares creation time with other files.
 All of which have hashed names and a random number of lines.
