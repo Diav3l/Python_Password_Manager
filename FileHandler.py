@@ -68,3 +68,8 @@ class File:
         with open(self.filename, 'w') as f:
             for line in array:
                 f.write(line+"\n")
+
+    def delete_file(self) -> None:
+        """Deletes the users file"""
+        os.remove(self.filename)
+
