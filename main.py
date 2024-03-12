@@ -125,7 +125,7 @@ def main():
             "Delete password entry....d\n" \
             "Change password..........c\n" \
             "Quit and close program...q\n" \
-            "Delete account.....delete\n:"
+            "Delete account......delete\n:"
     while True:
         update_noise()
         match input(menu).lower():
