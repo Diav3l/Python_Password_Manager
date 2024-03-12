@@ -100,3 +100,6 @@ File:
     delete_line(self, line_to_remove: int) -> None:
         Deletes given line in range [1,∞)
         :param line_to_remove: int
+
+    delete_file(self) -> None:
+        Deletes file
