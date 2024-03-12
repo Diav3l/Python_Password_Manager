@@ -77,11 +77,12 @@ def print_all_entries() -> None:
         index += 1
 
 
-def verify_login() -> bool:
-    """Verifies that user provided the correct password"""
+def verify_login(_hash : hashlib.sha3_512) -> bool:
+    """Verifies that user provided the correct password
+    :param _hash: sha3_512 hash"""
     if not os.path.exists(f.filename):
         return True
-    elif Encryptor.verify_hash.hexdigest() == Encryptor.decrypt(f.to_array()[0]).rstrip() and os.path.exists(f.filename):
+    elif Encryptor.stack(_hash).hexdigest() == Encryptor.decrypt(f.to_array()[0]).rstrip():
         return True
     else:
         return False
@@ -94,11 +95,7 @@ def change_password() -> None:
     This means that for a very short amount of time the users file exists as plaintext in RAM, the variable containing
     the plaintext entries is deleted at the end of the method, and the user is logged out
     """
-    old_password_hash = Encryption.Encryption.stack(hashlib.sha3_512(input("Old Password: ").encode())).hexdigest()
-    if not old_password_hash == Encryptor.decrypt(f.to_array()[0]).rstrip():
-        print("Old password is incorrect")
-        change_password()
-        return
+
     new = hashlib.sha3_512(input("New Password: ").encode())
     confirm_new = hashlib.sha3_512(input("Confirm New Password: ").encode())
     if not new.hexdigest() == confirm_new.hexdigest():
@@ -156,7 +153,7 @@ if __name__ == "__main__":
         password_hash = hashlib.sha3_512(input("Input password: ").encode())
         Encryptor = Encryption.Encryption(password_hash)
         f = FileHandler.File(username_pointer, Encryptor.encrypt(Encryptor.verify_hash.hexdigest()), True)
-        if not verify_login():
+        if not verify_login(password_hash):
             print("Username or password is incorrect")
             continue
         main()
