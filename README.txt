@@ -1,6 +1,7 @@
     This program uses a number of methods to protect user information theses include: using the users password to
-scramble the character list used for ROT encryption,stacking the users password, Varying the rotation on ROT encryption
-for each entry, naming the users file a hash of their username, and creating random noise files with the users file.
+scramble the character list used for ROT encryption, stacking the users password, Varying the rotation on ROT encryption
+for each entry, naming the users file a hash of their username, and creating random noise files simultaneously with the
+users file.
 
     ROT encryption is a symmetrical encryption process that simply moves each character on a string over a set number of
 places along an alphabet string. Using the users password as a seed to scramble this string effectively prevents user
