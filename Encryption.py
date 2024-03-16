@@ -2,6 +2,7 @@ import hashlib
 import secrets
 import random
 
+__author__ = "Cole J Gordnier"
 
 class Encryption:
     """uses variable ROT encryption and alphabet rotation derived from sha3_512 hashing and stacking the users password """

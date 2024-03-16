@@ -1,5 +1,6 @@
 import os
 
+__author__ = "Cole J Gordnier"
 
 class File:
     """File handler class"""
