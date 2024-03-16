@@ -14,22 +14,22 @@ class Encryption:
         that it is safeguarded because a lost password is a lost account and no recovery options are possible.
         """
         # Do not ever modify the below string, it will prevent proper decryption and all data will be lost
-        alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`~!@#$%^&*()_-=|\}]{[\"':;?/>.<, "
+        alphabet = """0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ """
         for i in range(500000):
             hashedPassword = hashlib.sha3_512(hashedPassword.digest() + hashedPassword.digest())
         random.seed(hashedPassword.digest())
         for i in range(500000):
             hashedPassword = hashlib.sha3_512(hashedPassword.digest() + hashedPassword.digest())
-        self.charSet = ''.join(random.sample(alphabet, len(alphabet)))
+        self.char_set = ''.join(random.sample(alphabet, len(alphabet)))
         self.verify_hash = hashedPassword
 
     def encrypt(self, string: str) -> str:
         """converts plaintext to ciphertext
         :returns ciphertext: str
         """
-        rotation = secrets.randbelow(len(self.charSet)-1)+1
+        rotation = secrets.randbelow(len(self.char_set) - 1) + 1
         Salt = secrets.randbelow(100)
-        encoded = "".join([self.charSet[(self.charSet.find(c) + rotation) % len(self.charSet)] for c in string])
+        encoded = "".join([self.char_set[(self.char_set.find(c) + rotation) % len(self.char_set)] for c in string])
         return encoded + str("{:04d}".format(rotation * Salt)) + str("{:02d}".format(Salt))
 
     def decrypt(self, string: str) -> str:
@@ -38,7 +38,7 @@ class Encryption:
         """
         rotation = int(string[-6:-2]) // int(string[-2:])
         actual = string[:-6]
-        return "".join([self.charSet[(self.charSet.find(c) - rotation) % len(self.charSet)] for c in actual])
+        return "".join([self.char_set[(self.char_set.find(c) - rotation) % len(self.char_set)] for c in actual])
 
     @staticmethod
     def generate(length=30, special_characters=True) -> str:
@@ -67,23 +67,23 @@ class Encryption:
         :param number_of_files: int
         """
         import FileHandler
-        alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`~!@#$%^&*()_-=|\}]{[\"':;?/>.<, "
+        alphabet = """0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ """
         for file_iterator in range(number_of_files):
             random.seed(secrets.token_hex())
             shuffled = ''.join(random.sample(alphabet, len(alphabet)))
-            false_rotation = secrets.randbelow(93)+1
+            false_rotation = secrets.randbelow(94)+1
             false_salt = secrets.randbelow(100)
             false_salt = str("{:04d}".format(false_rotation * false_salt)) + str("{:02d}".format(false_salt))
             false_title = hashlib.sha3_512(secrets.token_hex().encode()).hexdigest()
-            false_header = "".join([shuffled[(shuffled.find(c) + secrets.randbelow(94)) % 94] for c in false_title])
+            false_header = "".join([shuffled[(shuffled.find(c) + false_rotation) % 95] for c in false_title])
             f = FileHandler.File(false_title, false_header+false_salt)
             for line_iterator in range(random.randrange(1, 100)):
                 website = "http://"+Encryption.generate(random.randrange(11, 23), False)+".com"
                 username = Encryption.generate(random.randrange(5, 15), False)
                 password = Encryption.generate(random.randrange(8, 20), False)
                 line = website+", "+username+", "+password
-                false_rotation = secrets.randbelow(93)+1
+                false_rotation = secrets.randbelow(94)+1
                 false_salt = secrets.randbelow(100)
-                encoded = "".join([alphabet[(alphabet.find(c) + false_rotation) % 94] for c in line])
+                encoded = "".join([alphabet[(alphabet.find(c) + false_rotation) % 95] for c in line])
                 false_salt = str("{:04d}".format(false_rotation * false_salt)) + str("{:02d}".format(false_salt))
                 f.append_file(encoded+false_salt)
