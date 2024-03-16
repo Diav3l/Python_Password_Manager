@@ -26,7 +26,7 @@ class Encryption:
         """converts plaintext to ciphertext
         :returns ciphertext: str
         """
-        rotation = secrets.randbelow(len(self.charSet))
+        rotation = secrets.randbelow(len(self.charSet)-1)+1
         Salt = secrets.randbelow(100)
         encoded = "".join([self.charSet[(self.charSet.find(c) + rotation) % len(self.charSet)] for c in string])
         return encoded + str("{:04d}".format(rotation * Salt)) + str("{:02d}".format(Salt))
