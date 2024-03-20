@@ -1,4 +1,5 @@
 import os
+from NoiseFile import NoiseFile
 
 __author__ = "Cole J Gordnier"
 
@@ -19,20 +20,16 @@ class File:
         :param verify_hash: str, is the first line of file
         :param user_file = False, if True creates noise file
         """
-        if user_file:
-            # see users manual for explanation *
-            import Encryption
-            import secrets
         self.filename = "UserData/"+pointer+".txt"
         if not os.path.isdir("UserData"):
             os.mkdir("UserData")
         if not os.path.exists(self.filename):
             if user_file:
-                Encryption.Encryption.generate_noise(secrets.randbelow(11)+40)
+                NoiseFile.generate_noise_file()
             with open(self.filename, 'w') as f:
                 f.write(verify_hash+"\n")
             if user_file:
-                Encryption.Encryption.generate_noise(secrets.randbelow(11)+40)
+                NoiseFile.generate_noise_file()
 
     def append_file(self, passwordEntry: str) -> None:
         """Adds entry to the bottom of the file

@@ -60,30 +60,3 @@ class Encryption:
         for i in range(1000000):
             hashed_string = hashlib.sha3_512(hashed_string.digest() + hashed_string.digest())
         return hashed_string
-
-    @staticmethod
-    def generate_noise(number_of_files: int) -> None:
-        """Creates files of random length with noise that looks the same as actual user data
-        :param number_of_files: int
-        """
-        import FileHandler
-        alphabet = """0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ """
-        for file_iterator in range(number_of_files):
-            random.seed(secrets.token_hex())
-            shuffled = ''.join(random.sample(alphabet, len(alphabet)))
-            false_rotation = secrets.randbelow(94)+1
-            false_salt = secrets.randbelow(100)
-            false_salt = str("{:04d}".format(false_rotation * false_salt)) + str("{:02d}".format(false_salt))
-            false_title = hashlib.sha3_512(secrets.token_hex().encode()).hexdigest()
-            false_header = "".join([shuffled[(shuffled.find(c) + false_rotation) % 95] for c in false_title])
-            f = FileHandler.File(false_title, false_header+false_salt)
-            for line_iterator in range(random.randrange(1, 100)):
-                website = "http://"+Encryption.generate(random.randrange(11, 23), False)+".com"
-                username = Encryption.generate(random.randrange(5, 15), False)
-                password = Encryption.generate(random.randrange(8, 20), False)
-                line = website+", "+username+", "+password
-                false_rotation = secrets.randbelow(94)+1
-                false_salt = secrets.randbelow(100)
-                encoded = "".join([alphabet[(alphabet.find(c) + false_rotation) % 95] for c in line])
-                false_salt = str("{:04d}".format(false_rotation * false_salt)) + str("{:02d}".format(false_salt))
-                f.append_file(encoded+false_salt)

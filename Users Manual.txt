@@ -67,9 +67,19 @@ Encryption:
         :return hashed_string: _Hash
 
     @staticmethod
-    generate_noise(number_of_files: int) -> None:
+    generate_noise_file(number_of_files: int) -> None:
         Creates files of random length with noise that looks the same as actual user data
         :param number_of_files: int
+
+NoiseFile:
+     Class that is used to generate noise files
+
+    This class is standalone to prevent circular imports of Encryption and File
+
+    @staticmethod
+    generate_noise_file(number_of_files =secrets.randbelow(11) + 40) -> None:
+        Creates files of random length with noise that looks the same as actual user data
+        :param number_of_files: int, default secrets.randbelow(11)+40
 
 File:
     File handler class
